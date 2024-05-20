@@ -2,12 +2,8 @@ const mongoose = require('mongoose');
 
 const BookMarkSchema = new mongoose.Schema(
     {
-        job: {type: String, required: true},
+        job: {type: mongoose.Schema.Types.ObjectId,red: "Job" , required: true},
         userId: {type: String, required: true},
-        title: {type: String, required: true},
-        ImageUrl: {type: String, required: true},
-        company: {type: String, required: true},
-        location: {type: String, required: true},
     }, {timestamps: true}
 )
 

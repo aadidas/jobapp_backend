@@ -1,11 +1,17 @@
 const BookMark = require('../models/Bookmark');
+const Job = require('../models/Job');
 
 module.exports = {
     addBookmarks: async (req, res) => {
-        const newBookmark = new BookMark(req.body);
-
+        const jobID = req.body.job;
         try{
-            const saveBookmark = await newBookmark.save();
+            const getJob = await Job.findById(jobID);
+            // Check if getJob is not null or undefined
+            if (!getJob) {
+                return res.status(404).json({ message: "job not found" });
+            }
+            const newBookMark = new BookMark({job: getJob, userId: req.user.id});
+            const saveBookmark = await newBookMark.save();
             const { __v, createdAt, updatedAt, ...others } = saveBookmark._doc;
 
             res.status(200).json({...others});
@@ -32,7 +38,7 @@ module.exports = {
     },
     getAllBookmarks: async (req, res) => {
         try{
-            const getAllBookmarks = await BookMark.find({userId: req.params.userId});
+            const getAllBookmarks = await BookMark.find({userId: req.user.id});
             // console.log(getAllJob);
             res.status(200).json({getAllBookmarks});
         } catch (error) {

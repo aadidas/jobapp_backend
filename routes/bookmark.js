@@ -5,13 +5,13 @@ const { verifyAndAuthorization, verifyToken, verifyAdmin } = require('../middlew
 
 
 // create bookmarks
-router.post('/add', bookmarksController.addBookmarks);
+router.post('/add', verifyToken, bookmarksController.addBookmarks);
 
 //remove bookmarks
 router.delete('/:id', bookmarksController.removeBookmarks);
 
 //get all bookmarks
-router.get('/:userId', verifyToken, bookmarksController.getAllBookmarks)
+router.get('/', verifyToken, bookmarksController.getAllBookmarks)
 
 
 
